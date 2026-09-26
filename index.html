@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- DISGUISE: Sets the tab title to look like standard schoolwork -->
+    <title>i-Ready Student Dashboard Login</title>
+    <!-- WEBSITE ICON DISGUISE: Pulls the official orange cube icon straight from i-Ready -->
+    <link rel="icon" type="image/png" href="https://i-ready.com">
+    <style>
+        /* Base page styling matching the minimalist notebook aesthetic */
+        body {
+            font-family: 'Times New Roman', Times, serif;
+            background-color: #f4eee1; /* Warm cream background */
+            color: #2b2b2b;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        /* DISGUISE: Modified login box themed like i-Ready school software */
+        #login-box {
+            width: 100%;
+            max-width: 400px;
+            padding: 35px 30px;
+            background-color: #ffffff;
+            border: 2px solid #e0af43; 
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            box-sizing: border-box;
+        }
+
+        #login-box h3 {
+            font-family: sans-serif;
+            color: #ff8b00; /* i-Ready style theme orange tint */
+            margin-top: 0;
+            letter-spacing: 1px;
+            font-size: 1.5em;
+        }
+
+        #school-sub {
+            font-family: sans-serif;
+            font-size: 0.85em;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        input[type="password"], input[type="text"], select {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border: 1px solid #d4cbb5;
+            background-color: #faf8f5;
+            color: #2b2b2b;
+            border-radius: 4px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        .main-btn {
+            padding: 12px 25px;
+            background-color: #ff8b00; 
+            color: white;
+            border: none;
+            border-radius: 25px; 
+            cursor: pointer;
+            font-family: sans-serif;
+            font-size: 1em;
+            font-weight: bold;
+            letter-spacing: 1px;
+            width: 100%;
+        }
+
+        .main-btn:hover {
+            background-color: #e07b00;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        #error-msg {
+            color: #b83b3b;
+            margin-top: 10px;
+            font-size: 0.9em;
+            font-family: sans-serif;
+        }
+
+        #stream-area {
+            width: 100%;
+            max-width: 650px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* MEMOPAD PAPER DESIGN */
+        .memopad-paper {
+            background-color: #ffffff;
+            border: 1px solid #d4cbb5;
+            box-shadow: 5px 5px 0px #2b2b2b;
+            padding: 40px 30px;
+            box-sizing: border-box;
+            position: relative;
+            border-radius: 4px;
+        }
+
+        .paper-header {
+            font-size: 0.85em;
+            letter-spacing: 2px;
+            color: #7a7363;
+            margin-bottom: 20px;
+            line-height: 24px;
+        }
+
+        /* THE ENDLESS SCROLL FEED WINDOW */
+        .vertical-scroll-area {
+            display: flex;
+            flex-direction: column;
+            max-height: 45vh;          
+            overflow-y: auto;          
+            padding-right: 15px;       
+            
+            background-image: linear-gradient(#d4cbb5 1px, transparent 1px);
+            background-size: 100% 32px;
+            line-height: 32px;
+        }
+
+        .vertical-scroll-area::-webkit-scrollbar {
+            width: 6px;
+        }
+        .vertical-scroll-area::-webkit-scrollbar-track {
+            background: #faf8f5;
+            border-radius: 3px;
+        }
+        .vertical-scroll-area::-webkit-scrollbar-thumb {
+            background: #2b2b2b;
+            border-radius: 3px;
+        }
+
+        .message-block {
+            margin-bottom: 20px; 
+            padding-bottom: 10px;
+        }
+
+        .link-item {
+            display: block;          
+            margin-bottom: 45px;     
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #e6dfcf; 
+        }
+
+        .link-url-display {
+            font-family: monospace;
+            font-size: 0.95em;
+            color: #2b2b2b;
+            word-break: break-all;   
+            white-space: normal;
+            display: block;          
+            margin-bottom: 12px;     
+            line-height: 24px;
+        }
+
+        .label {
+            font-weight: bold;
+            font-size: 1.15em;
+            color: #2b2b2b;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            height: 32px;
+            margin-bottom: 12px;
+        }
+
+        .description {
+            font-size: 1em;
+            color: #555555;
+            line-height: 28px;
+            margin-bottom: 32px;     
+            white-space: normal;
+        }
+
+        .link-btn {
+            display: inline-block;
+            height: 32px;
+            line-height: 32px;
+            padding: 0 20px;
+            background-color: #2b2b2b;
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 2px;
+        }
+
+        .link-btn:hover {
+            background-color: #555555;
+        }
+
+        /* ⚙️ OWNER CONTROL DASHBOARD (Unlocks via admin123 key) */
+        #admin-panel {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 2px solid #2b2b2b;
+            background-color: #faf8f5;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 3px 3px 0px #d4cbb5;
+        }
+
+        #admin-panel h4 {
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.9em;
+            color: #7a7363;
+        }
+
+        .admin-box-segment {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px dotted #d4cbb5;
+        }
+
+        .admin-flex {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .admin-flex input[type="text"] {
+            margin: 0;
+            flex: 1;
+        }
+
+        .admin-btn {
+            padding: 8px 15px;
+            background-color: #2b2b2b;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85em;
+        }
+
+        /* Access Banned Notice Screen Override Look */
+        #ban-overlay-screen {
+            text-align: center;
+            padding: 40px;
+            background-color: #ffffff;
+            border: 2px solid #b83b3b;
+            border-radius: 8px;
+            max-width: 500px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        #ban-overlay-screen h1 { color: #b83b3b; font-family: sans-serif; }
+    </style>
+</head>
+<body>
+
+    <!-- TERMINATED BANNED BLACKLIST SCREEN INTERFACE -->
+    <div id="ban-overlay-screen" class="hidden">
+        <h1>ACCESS DENIED</h1>
+        <p style="font-family: sans-serif; color: #555;">Your network node address token has been blacklisted by the site operator.</p>
+    </div>
+
+    <!-- DISGUISED LOGIN SCREEN -->
+    <div id="login-box">
+        <h3>i-Ready Access Portal</h3>
+        <div id="school-sub">K-12 Student Assessment & Verification Engine</div>
+        <input type="password" id="password-input" placeholder="Enter Student Access Code...">
+        <br>
+        <button class="main-btn" onclick="checkPassword()">GO TO DASHBOARD</button>
+        <div id="error-msg" class="hidden">Invalid Access Code. Please contact your administrator.</div>
+    </div>
+
+    <!-- MAIN ACCESS AREA -->
+    <div id="stream-area" class="hidden">
+        
+        <!-- MEMOPAD CONTROLLER BOX -->
+        <div class="memopad-paper">
+            
+            <div class="paper-header">
+                <div>DATE: 2026.09.26</div>
+                <div>MEMO: ACTIVE DIRECTORY FEED</div>
+            </div>
+
+            <!-- THE ENDLESS VERTICAL FEED CONTAINER -->
+            <div class="vertical-scroll-area">
+                
+                <div class="message-block">
+                    <div class="label">// Unblocked Directory List</div>
+                    <div class="description">// All networks are broken up cleanly below. Use the Owner Controls form to add more items.</div>
+                    
+                    <!-- THE LIVE CONTAINER TARGET WHERE NEW LINKS POP UP -->
+                    <div id="live-links-target">
+
+                        <!-- BASE TEMPLATE LINK -->
+                        <div class="link-item">
+                            <span class="link-url-display">https://sw-metallwerkstatt.ch</span>
+                            <a href="https://sw-metallwerkstatt.ch" target="_blank" class="link-btn">Launch</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- OWNER CONTROL PANEL -->
+            <div id="admin-panel" class="hidden">
+                <div class="admin-box-segment">
+                    <h4>⚙️ Link Controls: Add New Link to Feed</h4>
+                    <div class="admin-flex">
+                        <input type="text" id="quick-url-input" placeholder="Paste unblocked link here...">
+                        <button class="admin-btn" onclick="addLinkFromPanel()">ADD LINK</button>
+                    </div>
+                </div>
+
